@@ -83,7 +83,7 @@
               type="button"
               onclick={() => onremove(word)}
               title="Remove {word}"
-              class="font-mono uppercase tracking-wider text-lg flex items-center px-2 rounded hover:bg-wordle-absent/40 hover:line-through cursor-pointer transition-colors {plural ? 'text-wordle-yellow' : 'text-wordle-dim'}"
+              class="font-mono uppercase tracking-wider text-lg flex items-center px-2 rounded hover:bg-wordle-gray/40 hover:line-through cursor-pointer transition-colors {plural ? 'text-wordle-yellow' : 'text-wordle-dim'}"
             >
               {#each word as char, i (i)}
                 <span class={letters[i] ? 'text-wordle-green font-bold' : ''}>{char}</span>

@@ -31,7 +31,7 @@
         value={val.toUpperCase()}
         oninput={(e) => update(i, (e.target as HTMLInputElement).value)}
         placeholder={`${i + 1}`}
-        class="w-16 h-12 text-center text-sm font-bold uppercase tracking-wider bg-wordle-bg text-wordle-absent placeholder:text-wordle-dim border-2 border-wordle-border rounded-lg focus:border-wordle-absent focus:outline-none transition-colors"
+        class="w-16 h-12 text-center text-sm font-bold uppercase tracking-wider bg-wordle-bg text-wordle-gray placeholder:text-wordle-dim border-2 border-wordle-border rounded-lg focus:border-wordle-gray focus:outline-none transition-colors"
       />
     {/each}
   </div>

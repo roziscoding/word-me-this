@@ -15,6 +15,32 @@
   let noDuplicates = $state(false)
   let cheaty = $state(false)
   let removed = $state(new SvelteSet<string>())
+  let welcomeOpen = $state(localStorage.getItem('welcome-dismissed') !== '1')
+  let shareCopied = $state(false)
+
+  function showWelcome() {
+    localStorage.removeItem('welcome-dismissed')
+    welcomeOpen = true
+  }
+
+  async function share() {
+    const url = window.location.href
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Word Me This', url })
+        return
+      } catch {
+        // fall through to clipboard
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      shareCopied = true
+      setTimeout(() => (shareCopied = false), 2000)
+    } catch {
+      // ignore
+    }
+  }
 
   const filtered = $derived.by(() => {
     const excludedSet = new Set(excluded)
@@ -52,11 +78,53 @@
   }
 </script>
 
-<WelcomeModal />
+<WelcomeModal bind:open={welcomeOpen} />
 <Confetti active={allGreen} />
 
 <main class="min-h-screen bg-wordle-bg text-wordle-text p-6 sm:p-10">
   <div class="max-w-6xl mx-auto">
+    <div class="absolute top-4 right-4 flex items-center gap-4 text-sm text-wordle-dim">
+      <button
+        type="button"
+        onclick={showWelcome}
+        class="hover:text-wordle-text underline cursor-pointer"
+      >
+        What's this?
+      </button>
+      <button
+        type="button"
+        onclick={share}
+        aria-label="Share"
+        class="flex items-center gap-1 cursor-pointer transition-colors {shareCopied ? 'text-wordle-green' : 'hover:text-wordle-text'}"
+      >
+        {#if shareCopied}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span class="text-xs">Copied!</span>
+        {:else}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        {/if}
+      </button>
+      <a
+        href="https://github.com/roziscoding/word-me-this"
+        target="_blank"
+        rel="noopener"
+        title="GitHub"
+        aria-label="GitHub"
+        class="hover:text-wordle-text"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.82 1.1.82 2.22 0 1.6-.02 2.89-.02 3.28 0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path>
+        </svg>
+      </a>
+    </div>
     <header class="mb-8 text-center">
       <h1 class="text-4xl font-bold text-wordle-text">Word Me This</h1>
       <p class="text-wordle-dim mt-2">Type letters in the positions you know</p>
@@ -98,8 +166,8 @@
           value={excluded}
           onchange={(v) => (excluded = v)}
           placeholder="e.g. XYZ"
-          textColor="text-wordle-absent"
-          focusBorder="focus:border-wordle-absent"
+          textColor="text-wordle-gray"
+          focusBorder="focus:border-wordle-gray"
         />
       </div>
     {/if}
