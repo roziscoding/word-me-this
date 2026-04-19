@@ -4,6 +4,7 @@
   import LettersInput from './lib/LettersInput.svelte'
   import Confetti from './lib/Confetti.svelte'
   import RemovedList from './lib/RemovedList.svelte'
+  import WelcomeModal from './lib/WelcomeModal.svelte'
   import WordList from './lib/WordList.svelte'
   import { fiveLetterWords } from './lib/words'
 
@@ -51,6 +52,7 @@
   }
 </script>
 
+<WelcomeModal />
 <Confetti active={allGreen} />
 
 <main class="min-h-screen bg-gray-950 text-gray-100 p-6 sm:p-10">
