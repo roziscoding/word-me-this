@@ -12,6 +12,12 @@
   --color-wordle-hover: #2a2a2a;
 }
 
+html,
+body {
+  background-color: #121213;
+  min-height: 100dvh;
+}
+
 @keyframes last-word-enter {
   0% {
     opacity: 0;

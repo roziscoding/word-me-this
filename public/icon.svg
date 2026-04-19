@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#121213"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="900" font-size="140" text-anchor="middle" fill="#d7dadc">
+    <rect x="56" y="100" width="120" height="120" rx="12" fill="#538d4e"/>
+    <text x="116" y="200">W</text>
+    <rect x="196" y="100" width="120" height="120" rx="12" fill="#3a3a3c"/>
+    <text x="256" y="200">M</text>
+    <rect x="336" y="100" width="120" height="120" rx="12" fill="#b59f3b"/>
+    <text x="396" y="200">T</text>
+    <rect x="126" y="292" width="120" height="120" rx="12" fill="#3a3a3c"/>
+    <text x="186" y="392">?</text>
+    <rect x="266" y="292" width="120" height="120" rx="12" fill="#538d4e"/>
+    <text x="326" y="392">!</text>
+  </g>
+</svg>

@@ -54,7 +54,7 @@
   maxlength="1"
   autocomplete="off"
   autocapitalize="characters"
-  class="w-16 h-16 text-center text-3xl font-bold uppercase bg-wordle-bg text-wordle-text caret-transparent border-2 border-wordle-border rounded-lg focus:border-wordle-dim focus:outline-none transition-colors"
+  class="w-16 h-16 text-center text-3xl font-bold uppercase caret-transparent border-2 rounded-lg focus:outline-none transition-colors {value ? 'bg-wordle-green text-white border-wordle-green' : 'bg-wordle-bg text-wordle-text border-wordle-border focus:border-wordle-dim'}"
   value={value.toUpperCase()}
   oninput={handleInput}
   onkeydown={handleKeydown}

@@ -17,23 +17,51 @@
     open = false
   }
 
-  async function share() {
+  function share() {
     const url = window.location.href
-    const text = "I can't figure this out — can you explain it to me?"
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'Word Me This', text, url })
-        return
-      } catch {
-        // fall through to clipboard
-      }
+    const shareData: ShareData = { title: 'Word Me This', url }
+
+    if (typeof navigator.share === 'function') {
+      navigator.share(shareData).catch((err: DOMException) => {
+        if (err?.name === 'AbortError') return
+        console.warn('navigator.share failed', err)
+        copyToClipboard(url)
+      })
+      return
     }
-    try {
-      await navigator.clipboard.writeText(url)
+
+    copyToClipboard(url)
+  }
+
+  function copyToClipboard(url: string) {
+    const done = () => {
       shared = true
       setTimeout(() => (shared = false), 2000)
+    }
+
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(() => {
+        legacyCopy(url) && done()
+      })
+      return
+    }
+
+    legacyCopy(url) && done()
+  }
+
+  function legacyCopy(text: string): boolean {
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.position = 'fixed'
+      ta.style.opacity = '0'
+      document.body.appendChild(ta)
+      ta.select()
+      const ok = document.execCommand('copy')
+      document.body.removeChild(ta)
+      return ok
     } catch {
-      // ignore
+      return false
     }
   }
 </script>
@@ -51,15 +79,22 @@
           Share this page with a smarter friend and ask them to explain.
         </p>
 
-        <Button color="blue" onclick={share}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-          </svg>
-          {shared ? 'Link copied!' : 'Share this page'}
+        <Button color={shared ? 'green' : 'blue'} onclick={share}>
+          {#if shared}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Link copied!
+          {:else}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            Share this page
+          {/if}
         </Button>
       {:else if level === 1}
         <h2 class="text-2xl font-bold text-wordle-text mb-4">Okay, for real this time 👇</h2>

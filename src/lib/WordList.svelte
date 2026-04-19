@@ -51,17 +51,16 @@
 </script>
 
 {#if words.length === 0}
-  <p class="text-center text-wordle-dim italic py-8">No matching words</p>
+  <div class="flex-1 flex items-center justify-center">
+    <p class="text-wordle-dim italic">No matching words</p>
+  </div>
 {:else if words.length === 1}
-  <div class="flex flex-col items-center justify-center py-16 last-word-reveal">
-    <button
-      type="button"
-      onclick={() => onremove(words[0])}
-      title="Remove {words[0]}"
-      class="font-mono uppercase tracking-[0.3em] text-5xl sm:text-7xl font-black text-wordle-green last-word-text cursor-pointer hover:text-red-400 transition-colors"
+  <div class="flex-1 flex flex-col items-center justify-center last-word-reveal">
+    <span
+      class="font-mono uppercase tracking-[0.3em] text-5xl sm:text-7xl font-black text-wordle-green last-word-text"
     >
       {words[0]}
-    </button>
+    </span>
   </div>
 {:else}
   <div
@@ -69,7 +68,7 @@
     bind:clientHeight={viewportHeight}
     bind:clientWidth={containerWidth}
     onscroll={(e) => (scrollTop = (e.currentTarget as HTMLDivElement).scrollTop)}
-    class="h-[60vh] overflow-y-auto"
+    class="flex-1 min-h-0 overflow-y-auto"
   >
     <div style="height: {totalHeight}px; position: relative;">
       {#each visible as { row, index } (index)}

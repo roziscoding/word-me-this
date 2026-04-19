@@ -1,9 +1,11 @@
 <script lang="ts">
+  import pluralize from 'pluralize'
   import { SvelteSet } from 'svelte/reactivity'
   import LetterInputs from './lib/LetterInputs.svelte'
   import LettersInput from './lib/LettersInput.svelte'
   import Confetti from './lib/Confetti.svelte'
   import RemovedList from './lib/RemovedList.svelte'
+  import ToggleableButton from './lib/ToggleableButton.svelte'
   import WelcomeModal from './lib/WelcomeModal.svelte'
   import WordList from './lib/WordList.svelte'
   import { fiveLetterWords } from './lib/words'
@@ -13,6 +15,7 @@
   let required = $state('')
   let forbiddenPositions = $state(['', '', '', '', ''])
   let noDuplicates = $state(false)
+  let hidePlurals = $state(false)
   let cheaty = $state(false)
   let removed = $state(new SvelteSet<string>())
   let welcomeOpen = $state(localStorage.getItem('welcome-dismissed') !== '1')
@@ -53,7 +56,8 @@
         ![...word].some((c) => excludedSet.has(c)) &&
         requiredArr.every((c) => word.includes(c)) &&
         [...word].every((c, i) => !forbiddenSets[i].has(c)) &&
-        (!noDuplicates || new Set(word).size === word.length),
+        (!noDuplicates || new Set(word).size === word.length) &&
+        (!hidePlurals || !pluralize.isPlural(word)),
     )
   })
 
@@ -64,7 +68,10 @@
       excluded !== '' ||
       required !== '' ||
       forbiddenPositions.some((s) => s !== '') ||
-      removed.size > 0,
+      removed.size > 0 ||
+      noDuplicates ||
+      hidePlurals ||
+      cheaty,
   )
 
   function clear() {
@@ -72,17 +79,21 @@
     excluded = ''
     required = ''
     forbiddenPositions = ['', '', '', '', '']
+    noDuplicates = false
+    hidePlurals = false
+    cheaty = false
     removed.clear()
-    const first = document.querySelector<HTMLInputElement>('[data-letter-index="0"]')
-    first?.focus()
   }
 </script>
 
 <WelcomeModal bind:open={welcomeOpen} />
 <Confetti active={allGreen} />
 
-<main class="min-h-screen bg-wordle-bg text-wordle-text p-6 sm:p-10">
-  <div class="max-w-6xl mx-auto">
+<main
+  class="h-dvh overflow-hidden bg-wordle-bg text-wordle-text flex flex-col"
+  style="padding: max(1.5rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left));"
+>
+  <div class="max-w-6xl mx-auto w-full flex-1 min-h-0 flex flex-col">
     <div class="absolute top-4 right-4 flex items-center gap-4 text-sm text-wordle-dim">
       <button
         type="button"
@@ -125,34 +136,36 @@
         </svg>
       </a>
     </div>
-    <header class="mb-8 text-center">
-      <h1 class="text-4xl font-bold text-wordle-text">Word Me This</h1>
-      <p class="text-wordle-dim mt-2">Type letters in the positions you know</p>
-    </header>
-
-    <LetterInputs letters={letters} onchange={(next) => (letters = next)} />
+    <div class="mt-10">
+      <LetterInputs letters={letters} onchange={(next) => (letters = next)} />
+    </div>
 
     <div class="mt-6 flex flex-wrap justify-center gap-2">
-      <button
-        type="button"
+      <ToggleableButton
+        color="cyan"
+        enabled={noDuplicates}
         onclick={() => (noDuplicates = !noDuplicates)}
-        class="text-xs px-3 py-1.5 rounded border hover:bg-wordle-hover transition-colors {noDuplicates ? 'text-wordle-green border-wordle-green' : 'text-wordle-dim border-wordle-border'}"
       >
-        {noDuplicates ? '🚫 No duplicates ON' : '🚫 Hide duplicates'}
-      </button>
-      <button
-        type="button"
+        {noDuplicates ? '🚫 Hide duplicates ON' : '🚫 Hide duplicates'}
+      </ToggleableButton>
+      <ToggleableButton
+        color="emerald"
+        enabled={hidePlurals}
+        onclick={() => (hidePlurals = !hidePlurals)}
+      >
+        {hidePlurals ? '📚 Hide plurals ON' : '📚 Hide plurals'}
+      </ToggleableButton>
+      <ToggleableButton
+        color="fuchsia"
+        enabled={cheaty}
         onclick={() => (cheaty = !cheaty)}
-        class="text-xs px-3 py-1.5 rounded border transition-colors {cheaty
-          ? 'text-wordle-yellow border-wordle-yellow bg-wordle-yellow/20'
-          : 'text-wordle-dim border-wordle-border hover:bg-wordle-hover'}"
       >
         {cheaty ? '😈 Cheaty Mode ON' : '😈 Cheaty Mode'}
-      </button>
+      </ToggleableButton>
     </div>
 
     {#if cheaty}
-      <div class="mt-6 flex flex-wrap justify-center gap-6">
+      <div class="mt-6 flex justify-center gap-4">
         <LettersInput
           label="Must contain"
           value={required}
@@ -172,9 +185,8 @@
       </div>
     {/if}
 
-    <div class="mt-4 flex items-center justify-center gap-4 text-sm text-wordle-dim">
-      <span>{filtered.length.toLocaleString()} words</span>
-      {#if hasInput}
+    {#if hasInput}
+      <div class="mt-4 flex items-center justify-center text-sm text-wordle-dim">
         <button
           type="button"
           onclick={clear}
@@ -182,10 +194,10 @@
         >
           Clear
         </button>
-      {/if}
-    </div>
+      </div>
+    {/if}
 
-    <section class="mt-8 bg-wordle-surface border border-wordle-border rounded-lg p-6">
+    <section class="mt-8 bg-wordle-surface border border-wordle-border rounded-lg p-6 flex-1 min-h-0 flex flex-col">
       <WordList
         words={filtered}
         letters={letters}

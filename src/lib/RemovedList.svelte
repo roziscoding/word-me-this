@@ -12,7 +12,7 @@
     <h2 class="text-sm text-wordle-dim mb-3">
       Excluded ({words.length}) — click to restore
     </h2>
-    <div class="flex flex-wrap gap-2">
+    <div class="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
       {#each words as word (word)}
         <button
           type="button"
