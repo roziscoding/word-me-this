@@ -68,9 +68,11 @@
 
 {#if open}
   <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+    class="fixed inset-0 z-50 flex sm:items-center sm:justify-center sm:bg-black/70 sm:backdrop-blur-sm sm:p-4"
   >
-    <div class="bg-wordle-surface border border-wordle-border rounded-xl max-w-lg w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+    <div
+      class="bg-wordle-surface w-full h-full sm:h-auto sm:max-w-lg sm:max-h-[90vh] sm:border sm:border-wordle-border sm:rounded-xl sm:shadow-2xl overflow-y-auto pt-[max(1.5rem,env(safe-area-inset-top))] pr-[max(1.5rem,env(safe-area-inset-right))] pb-[max(1.5rem,env(safe-area-inset-bottom))] pl-[max(1.5rem,env(safe-area-inset-left))] sm:p-8"
+    >
       {#if level === 2}
         <h2 class="text-2xl font-bold text-wordle-text mb-4">Well...</h2>
 
