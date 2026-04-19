@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+
+@keyframes last-word-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: blur(0);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes last-word-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.4), 0 0 30px rgba(34, 197, 94, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 50px rgba(34, 197, 94, 0.3);
+  }
+}
+
+.last-word-reveal {
+  animation: last-word-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.last-word-text {
+  animation: last-word-glow 2s ease-in-out infinite;
+}
