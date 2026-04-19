@@ -8,8 +8,8 @@
 </script>
 
 {#if words.length > 0}
-  <section class="mt-6 bg-gray-900 border border-gray-800 rounded-lg p-4">
-    <h2 class="text-sm text-gray-400 mb-3">
+  <section class="mt-6 bg-wordle-surface border border-wordle-border rounded-lg p-4">
+    <h2 class="text-sm text-wordle-dim mb-3">
       Excluded ({words.length}) — click to restore
     </h2>
     <div class="flex flex-wrap gap-2">
@@ -17,7 +17,7 @@
         <button
           type="button"
           onclick={() => onrestore(word)}
-          class="font-mono uppercase text-sm px-2 py-1 rounded border border-gray-700 text-gray-400 line-through hover:border-green-500 hover:text-green-400 hover:no-underline transition-colors cursor-pointer"
+          class="font-mono uppercase text-sm px-2 py-1 rounded border border-wordle-border text-wordle-dim line-through hover:border-wordle-green hover:text-wordle-green hover:no-underline transition-colors cursor-pointer"
         >
           {word}
         </button>

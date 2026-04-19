@@ -22,7 +22,7 @@
 </script>
 
 <div class="flex flex-col items-center gap-2">
-  <span class="text-sm text-gray-400">Forbid letters at position</span>
+  <span class="text-sm text-wordle-dim">Forbid letters at position</span>
   <div class="flex gap-2">
     {#each values as val, i (i)}
       <input
@@ -31,7 +31,7 @@
         value={val.toUpperCase()}
         oninput={(e) => update(i, (e.target as HTMLInputElement).value)}
         placeholder={`${i + 1}`}
-        class="w-16 h-12 text-center text-sm font-bold uppercase tracking-wider bg-gray-900 text-red-400 placeholder:text-gray-600 border-2 border-gray-700 rounded-lg focus:border-red-500 focus:outline-none transition-colors"
+        class="w-16 h-12 text-center text-sm font-bold uppercase tracking-wider bg-wordle-bg text-wordle-absent placeholder:text-wordle-dim border-2 border-wordle-border rounded-lg focus:border-wordle-absent focus:outline-none transition-colors"
       />
     {/each}
   </div>

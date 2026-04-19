@@ -30,7 +30,7 @@
 </script>
 
 <label class="flex flex-col items-center gap-2">
-  <span class="text-sm text-gray-400">{label}</span>
+  <span class="text-sm text-wordle-dim">{label}</span>
   <input
     bind:this={inputEl}
     type="text"
@@ -38,6 +38,6 @@
     value={value.toUpperCase()}
     oninput={handle}
     {placeholder}
-    class="w-64 h-10 text-center text-lg font-bold uppercase tracking-widest bg-gray-900 border-2 border-gray-700 rounded-lg focus:outline-none transition-colors {textColor} {focusBorder}"
+    class="w-64 h-10 text-center text-lg font-bold uppercase tracking-widest bg-wordle-bg border-2 border-wordle-border rounded-lg focus:outline-none transition-colors {textColor} {focusBorder}"
   />
 </label>

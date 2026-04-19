@@ -51,14 +51,14 @@
 </script>
 
 {#if words.length === 0}
-  <p class="text-center text-gray-500 italic py-8">No matching words</p>
+  <p class="text-center text-wordle-dim italic py-8">No matching words</p>
 {:else if words.length === 1}
   <div class="flex flex-col items-center justify-center py-16 last-word-reveal">
     <button
       type="button"
       onclick={() => onremove(words[0])}
       title="Remove {words[0]}"
-      class="font-mono uppercase tracking-[0.3em] text-5xl sm:text-7xl font-black text-green-400 last-word-text cursor-pointer hover:text-red-400 transition-colors"
+      class="font-mono uppercase tracking-[0.3em] text-5xl sm:text-7xl font-black text-wordle-green last-word-text cursor-pointer hover:text-red-400 transition-colors"
     >
       {words[0]}
     </button>
@@ -83,10 +83,10 @@
               type="button"
               onclick={() => onremove(word)}
               title="Remove {word}"
-              class="font-mono uppercase tracking-wider text-lg flex items-center px-2 rounded hover:bg-red-900/40 hover:line-through cursor-pointer transition-colors {plural ? 'text-yellow-400' : 'text-gray-400'}"
+              class="font-mono uppercase tracking-wider text-lg flex items-center px-2 rounded hover:bg-wordle-absent/40 hover:line-through cursor-pointer transition-colors {plural ? 'text-wordle-yellow' : 'text-wordle-dim'}"
             >
               {#each word as char, i (i)}
-                <span class={letters[i] ? 'text-green-400 font-bold' : ''}>{char}</span>
+                <span class={letters[i] ? 'text-wordle-green font-bold' : ''}>{char}</span>
               {/each}
             </button>
           {/each}

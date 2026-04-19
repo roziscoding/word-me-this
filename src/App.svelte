@@ -55,11 +55,11 @@
 <WelcomeModal />
 <Confetti active={allGreen} />
 
-<main class="min-h-screen bg-gray-950 text-gray-100 p-6 sm:p-10">
+<main class="min-h-screen bg-wordle-bg text-wordle-text p-6 sm:p-10">
   <div class="max-w-6xl mx-auto">
     <header class="mb-8 text-center">
-      <h1 class="text-4xl font-bold text-gray-100">Word Me This</h1>
-      <p class="text-gray-400 mt-2">Type letters in the positions you know</p>
+      <h1 class="text-4xl font-bold text-wordle-text">Word Me This</h1>
+      <p class="text-wordle-dim mt-2">Type letters in the positions you know</p>
     </header>
 
     <LetterInputs letters={letters} onchange={(next) => (letters = next)} />
@@ -68,7 +68,7 @@
       <button
         type="button"
         onclick={() => (noDuplicates = !noDuplicates)}
-        class="text-xs px-3 py-1.5 rounded border hover:bg-gray-800 transition-colors {noDuplicates ? 'text-blue-400 border-blue-400' : 'text-gray-400 border-gray-700'}"
+        class="text-xs px-3 py-1.5 rounded border hover:bg-wordle-hover transition-colors {noDuplicates ? 'text-wordle-green border-wordle-green' : 'text-wordle-dim border-wordle-border'}"
       >
         {noDuplicates ? '🚫 No duplicates ON' : '🚫 Hide duplicates'}
       </button>
@@ -76,8 +76,8 @@
         type="button"
         onclick={() => (cheaty = !cheaty)}
         class="text-xs px-3 py-1.5 rounded border transition-colors {cheaty
-          ? 'text-purple-400 border-purple-700 bg-purple-900/20'
-          : 'text-gray-400 border-gray-700 hover:bg-gray-800'}"
+          ? 'text-wordle-yellow border-wordle-yellow bg-wordle-yellow/20'
+          : 'text-wordle-dim border-wordle-border hover:bg-wordle-hover'}"
       >
         {cheaty ? '😈 Cheaty Mode ON' : '😈 Cheaty Mode'}
       </button>
@@ -90,34 +90,34 @@
           value={required}
           onchange={(v) => (required = v)}
           placeholder="e.g. AE"
-          textColor="text-yellow-400"
-          focusBorder="focus:border-yellow-500"
+          textColor="text-wordle-yellow"
+          focusBorder="focus:border-wordle-yellow"
         />
         <LettersInput
           label="Exclude letters"
           value={excluded}
           onchange={(v) => (excluded = v)}
           placeholder="e.g. XYZ"
-          textColor="text-red-400"
-          focusBorder="focus:border-red-500"
+          textColor="text-wordle-absent"
+          focusBorder="focus:border-wordle-absent"
         />
       </div>
     {/if}
 
-    <div class="mt-4 flex items-center justify-center gap-4 text-sm text-gray-400">
+    <div class="mt-4 flex items-center justify-center gap-4 text-sm text-wordle-dim">
       <span>{filtered.length.toLocaleString()} words</span>
       {#if hasInput}
         <button
           type="button"
           onclick={clear}
-          class="px-3 py-1 rounded border border-gray-700 hover:bg-gray-800 transition-colors"
+          class="px-3 py-1 rounded border border-wordle-border hover:bg-wordle-hover transition-colors"
         >
           Clear
         </button>
       {/if}
     </div>
 
-    <section class="mt-8 bg-gray-900 border border-gray-800 rounded-lg p-6">
+    <section class="mt-8 bg-wordle-surface border border-wordle-border rounded-lg p-6">
       <WordList
         words={filtered}
         letters={letters}
